@@ -5,53 +5,95 @@ export const CORE_TEAM_IDS = ['edivaldo', 'cynthia', 'naiara', 'emanuel', 'fabia
 
 export const MEMBERS: Member[] = [
   { 
-    id: 'edivaldo', 
-    name: 'Edivaldo Junior', 
-    role: 'Tech Lead & Fullstack', 
-    photoUrl: 'https://github.com/edivaldojuniordev.png',
-    linkedin: 'https://linkedin.com/in/edivaldojuniordev',
-    github: 'https://github.com/edivaldojuniordev',
-    bio: 'Desenvolvedor focado em arquitetura de software e soluções em nuvem. Lidera a implementação técnica do Portfólio CloudDev.'
+    id: 'emanuel', 
+    name: 'Emanuel Heráclio', 
+    role: 'Product Owner / Analista de Negócios',
+    photoUrl: 'https://ui-avatars.com/api/?name=Emanuel+Heraclio&background=10B981&color=fff',
+    linkedin: '#',
+    bio: 'Definidor da visão do produto e requisitos.',
+    responsibilities: [
+      "Definir visão e objetivos do produto",
+      "Levantar e documentar requisitos",
+      "Criar e priorizar backlog",
+      "Escrever histórias de usuário",
+      "Ponte entre stakeholders e equipe técnica"
+    ]
   },
   { 
     id: 'cynthia', 
     name: 'Cynthia Borelli', 
-    role: 'Product Owner & UX',
+    role: 'Scrum Master / Gerente de Projeto',
     photoUrl: 'https://ui-avatars.com/api/?name=Cynthia+Borelli&background=F97316&color=fff',
     linkedin: '#',
-    bio: 'Especialista em visão de produto e experiência do usuário. Garante que as entregas gerem valor real para o cliente.'
+    bio: 'Guardiã da metodologia ágil.',
+    responsibilities: [
+      "Planejar sprints e cronograma",
+      "Conduzir reuniões ágeis (Daily, Review)",
+      "Remover impedimentos da equipe",
+      "Garantir aplicação da metodologia Scrum",
+      "Acompanhar progresso do projeto"
+    ]
   },
   { 
     id: 'naiara', 
     name: 'Naiara Oliveira', 
-    role: 'Scrum Master',
+    role: 'Designer UI/UX',
     photoUrl: 'https://ui-avatars.com/api/?name=Naiara+Oliveira&background=8B5CF6&color=fff',
     linkedin: '#',
-    bio: 'Facilitadora ágil, remove impedimentos e garante que o time siga as cerimônias e boas práticas do Scrum.'
-  },
-  { 
-    id: 'emanuel', 
-    name: 'Emanuel Heráclio', 
-    role: 'Cloud Architect',
-    photoUrl: 'https://ui-avatars.com/api/?name=Emanuel+Heraclio&background=10B981&color=fff',
-    linkedin: '#',
-    bio: 'Focado em infraestrutura e serviços AWS. Desenha a arquitetura escalável para suportar as aplicações.'
+    bio: 'Responsável pela experiência do usuário.',
+    responsibilities: [
+      "Criar wireframes e protótipos",
+      "Definir identidade visual",
+      "Projetar experiência do usuário",
+      "Validar usabilidade com testes",
+      "Colaborar com desenvolvedor front-end"
+    ]
   },
   { 
     id: 'fabiano', 
     name: 'Fabiano Santana', 
-    role: 'Backend Developer',
+    role: 'Arquiteto de Software / Back-end',
     photoUrl: 'https://ui-avatars.com/api/?name=Fabiano+Santana&background=3B82F6&color=fff',
     linkedin: '#',
-    bio: 'Especialista em APIs e banco de dados. Garante a integridade e segurança dos dados no Supabase.'
+    bio: 'Especialista em infraestrutura e dados.',
+    responsibilities: [
+      "Definir arquitetura do sistema",
+      "Escolher tecnologias e frameworks",
+      "Modelar banco de dados",
+      "Desenvolver APIs e regras de negócio",
+      "Garantir segurança e escalabilidade"
+    ]
+  },
+  { 
+    id: 'edivaldo', 
+    name: 'Edivaldo Junior', 
+    role: 'Desenvolvedor Front-end', 
+    photoUrl: 'https://avatars.githubusercontent.com/u/115662943?v=4',
+    linkedin: 'https://linkedin.com/in/edivaldojuniordev',
+    github: 'https://github.com/edivaldojuniordev',
+    bio: 'Liderança técnica e implementação de interface.',
+    responsibilities: [
+      "Implementar interface do usuário (UI)",
+      "Integrar front-end com APIs",
+      "Garantir responsividade e acessibilidade",
+      "Corrigir bugs visuais e de interação",
+      "Seguir padrões de design definidos"
+    ]
   },
   { 
     id: 'gabriel', 
     name: 'Gabriel Araujo', 
-    role: 'Frontend Developer',
+    role: 'QA Tester / DevOps',
     photoUrl: 'https://ui-avatars.com/api/?name=Gabriel+Araujo&background=EC4899&color=fff',
     linkedin: '#',
-    bio: 'Desenvolvedor de interfaces, focado em criar experiências responsivas e animações fluidas.'
+    bio: 'Garantia de qualidade e automação.',
+    responsibilities: [
+      "Criar e executar casos de teste",
+      "Realizar testes funcionais e integração",
+      "Documentar bugs e falhas",
+      "Configurar pipeline de CI/CD",
+      "Automatizar processos de build e deploy"
+    ]
   },
   {
     id: 'lucas',

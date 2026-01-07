@@ -2,14 +2,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { INITIAL_VOTES, MEMBERS as DEFAULT_MEMBERS, PROPOSALS as DEFAULT_PROPOSALS, CORE_TEAM_IDS, TEAMS as DEFAULT_TEAMS } from './constants';
 import { Score, VotesState, Member, Proposal, User, Team } from './types';
-// import { supabase } from './lib/supabase'; // REMOVIDO PELA AUDITORIA
-import { api } from './lib/api'; // CAMINHO CORRIGIDO (src/lib/api)
+import { api } from './lib/api'; 
 import VotingForm from './components/VotingForm';
 import ResultsMatrix from './components/ResultsMatrix';
 import AIChatPanel from './components/AIChatPanel';
 import LoginPanel from './components/LoginPanel';
 import TeamDashboard from './components/TeamDashboard';
 import TeamMembers from './components/TeamMembers';
+import TeamRolesPanel from './components/TeamRolesPanel'; // NOVO COMPONENTE
 import GuidePanel from './components/GuidePanel'; 
 import { Moon, Sun, BarChart3, LogOut, Layers, ChevronLeft, BookOpen } from 'lucide-react';
 
@@ -19,7 +19,8 @@ const App: React.FC = () => {
     return saved ? JSON.parse(saved) : null;
   });
 
-  const [view, setView] = useState<'dashboard' | 'matrix' | 'members' | 'guide'>('dashboard');
+  // ADICIONADO 'roles' AO VIEW STATE
+  const [view, setView] = useState<'dashboard' | 'matrix' | 'members' | 'guide' | 'roles'>('dashboard');
   const [activeTab, setActiveTab] = useState<'vote' | 'results' | 'ai'>('vote');
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   
@@ -37,7 +38,6 @@ const App: React.FC = () => {
   const syncData = useCallback(async () => {
     if(!currentUser) return;
     try {
-        // Busca dados paralelos
         const [remoteTeams, remoteProfiles, remoteVotes] = await Promise.all([
             api.fetchData('teams'),
             api.fetchData('profiles'),
@@ -59,7 +59,6 @@ const App: React.FC = () => {
   useEffect(() => {
     if(currentUser) {
         syncData();
-        // Polling simples para manter atualizado (substituto de WebSockets por enquanto)
         const interval = setInterval(syncData, 5000);
         return () => clearInterval(interval);
     }
@@ -69,7 +68,7 @@ const App: React.FC = () => {
 
   const handleSaveTeam = async (updatedTeam: Team) => {
       const newTeams = teams.map(t => t.id === updatedTeam.id ? updatedTeam : t);
-      setTeams(newTeams); // Otimista
+      setTeams(newTeams); 
       await api.saveData('teams', newTeams);
   };
 
@@ -84,14 +83,12 @@ const App: React.FC = () => {
     if (!currentUser) return;
     const memberId = CORE_TEAM_IDS.find(id => currentUser.name.toLowerCase().includes(id)) || 'visitor';
     
-    // Atualiza estado local deep copy
     const newVotes = JSON.parse(JSON.stringify(votes));
     if(!newVotes[memberId]) newVotes[memberId] = {};
     if(!newVotes[memberId][pid]) newVotes[memberId][pid] = {};
     newVotes[memberId][pid][cidx] = score;
 
     setVotes(newVotes);
-    // Salva estado completo no backend (estratégia simples para MVP)
     await api.saveData('votes', newVotes);
   };
 
@@ -158,6 +155,7 @@ const App: React.FC = () => {
             onSaveTeam={handleSaveTeam} 
             onEnterMatrix={(t) => { setSelectedTeam(t); setView('matrix'); }} 
             onViewMembers={(t) => { setSelectedTeam(t); setView('members'); }}
+            onViewRoles={(t) => { setSelectedTeam(t); setView('roles'); }} // NOVA PROP
             currentUser={currentUser} 
           />
         )}
@@ -167,6 +165,16 @@ const App: React.FC = () => {
             team={selectedTeam} 
             onBack={() => setView('dashboard')}
             currentUser={currentUser} 
+            savedProfiles={savedProfiles}
+            onSaveProfile={handleSaveProfile}
+          />
+        )}
+
+        {view === 'roles' && selectedTeam && (
+          <TeamRolesPanel
+            team={selectedTeam}
+            currentUser={currentUser}
+            onBack={() => setView('dashboard')}
             savedProfiles={savedProfiles}
             onSaveProfile={handleSaveProfile}
           />

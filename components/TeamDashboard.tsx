@@ -1,17 +1,18 @@
 
 import React, { useState } from 'react';
 import { Team, User } from '../types';
-import { Edit3, Users, Briefcase, BarChart3, Check, Loader2, ArrowRight } from 'lucide-react';
+import { Edit3, Users, Briefcase, BarChart3, Check, Loader2, ArrowRight, UserCheck } from 'lucide-react';
 
 interface TeamDashboardProps {
   teams: Team[];
   onSaveTeam: (team: Team) => Promise<void>;
   onEnterMatrix: (team: Team) => void;
-  onViewMembers?: (team: Team) => void; // Nova prop opcional
+  onViewMembers?: (team: Team) => void; 
+  onViewRoles?: (team: Team) => void; // Nova prop
   currentUser: User;
 }
 
-const TeamDashboard: React.FC<TeamDashboardProps> = ({ teams, onSaveTeam, onEnterMatrix, onViewMembers, currentUser }) => {
+const TeamDashboard: React.FC<TeamDashboardProps> = ({ teams, onSaveTeam, onEnterMatrix, onViewMembers, onViewRoles, currentUser }) => {
   const [editingTeamId, setEditingTeamId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Team | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -96,19 +97,28 @@ const TeamDashboard: React.FC<TeamDashboardProps> = ({ teams, onSaveTeam, onEnte
 
             {/* Footer Card Actions */}
             <div className="p-6 bg-slate-50/50 dark:bg-slate-800/20 flex flex-col gap-2">
-               {/* Botão para ver integrantes (NOVO) */}
-               {onViewMembers && (
-                 <button 
-                    onClick={() => onViewMembers(team)}
-                    className="w-full bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all mb-2"
-                 >
-                   <Users size={16} /> CONHECER O TIME
-                 </button>
-               )}
+               <div className="flex gap-2">
+                  {onViewMembers && (
+                    <button 
+                        onClick={() => onViewMembers(team)}
+                        className="flex-1 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 py-3 rounded-xl text-[10px] font-bold flex items-center justify-center gap-1 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all"
+                    >
+                    <Users size={14} /> PERFIS
+                    </button>
+                  )}
+                  {onViewRoles && (
+                    <button 
+                        onClick={() => onViewRoles(team)}
+                        className="flex-1 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800 py-3 rounded-xl text-[10px] font-bold flex items-center justify-center gap-1 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-all"
+                    >
+                    <UserCheck size={14} /> PAPÉIS
+                    </button>
+                  )}
+               </div>
 
                <button 
                   onClick={() => onEnterMatrix(team)}
-                  className="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-4 cloud-shape-button text-xs font-black flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-lg"
+                  className="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-4 cloud-shape-button text-xs font-black flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-lg mt-1"
                 >
                  <BarChart3 size={16} /> MATRIZ COGNIS
                </button>

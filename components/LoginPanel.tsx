@@ -87,12 +87,12 @@ const CAROUSEL_STEPS = [
   },
   {
     type: 'profile',
-    title: "QUEM SOU EU",
+    title: "ARQUITETO DO SISTEMA",
     name: "Edivaldo Junior",
     role: "Engenheiro de Software & Cloud Architect",
     bio: "Engenheiro de Software em formação e Desenvolvedor focado em Python. Minha missão é construir a ponte entre o código e o mundo físico. Minha paixão é a criação de soluções completas, filosofia que chamo de 'Vibercode'. Liderei o desenvolvimento da plataforma Matriz de Análise.",
     skills: ["Python", "Django", "SQL", "React", "JavaScript", "AWS", "UX Design", "Figma", "Docker", "IaC"],
-    photoUrl: "https://github.com/edivaldojuniordev.png",
+    photoUrl: "https://avatars.githubusercontent.com/u/115662943?v=4",
     color: "from-[#020c1b] to-[#0A192F]"
   }
 ];
@@ -169,6 +169,12 @@ const LoginPanel: React.FC<{ onLogin: (user: User) => void }> = ({ onLogin }) =>
           0% { background-position: -200% center; }
           100% { background-position: 200% center; }
         }
+        @keyframes shine {
+            100% { left: 125%; }
+        }
+        .animate-shine {
+            animation: shine 1s;
+        }
         .shine-text-white {
           background: linear-gradient(to right, #ffffff 40%, #94a3b8 50%, #ffffff 60%);
           background-size: 200% auto;
@@ -224,7 +230,10 @@ const LoginPanel: React.FC<{ onLogin: (user: User) => void }> = ({ onLogin }) =>
                             <img 
                               src={slide.photoUrl} 
                               alt={slide.name} 
-                              onError={(e) => { e.currentTarget.src = `https://ui-avatars.com/api/?name=Edivaldo+Junior&background=0D8ABC&color=fff&size=256`; }}
+                              onError={(e) => { 
+                                console.warn("Falha ao carregar imagem GitHub, usando fallback");
+                                e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(slide.name)}&background=0D8ABC&color=fff&size=256`; 
+                              }}
                               className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-700"
                             />
                         </div>
@@ -234,17 +243,32 @@ const LoginPanel: React.FC<{ onLogin: (user: User) => void }> = ({ onLogin }) =>
                             <h2 className="text-white text-3xl font-bold leading-tight mb-1">{slide.name}</h2>
                             <p className="text-slate-400 text-xs font-mono">{slide.role}</p>
                         </div>
-                        <div className="text-slate-300 text-[11px] leading-relaxed font-light border-l-2 border-[#64FFDA]/50 pl-3 min-h-[140px]">
+                        <div className="text-slate-300 text-[11px] leading-relaxed font-light border-l-2 border-[#64FFDA]/50 pl-3 min-h-[100px]">
                              <TypewriterText text={slide.bio || ''} speed={15} delay={500} active={true} />
                         </div>
-                        <div className="space-y-1 pt-2">
-                            <p className="text-[#64FFDA] text-[10px] font-bold uppercase tracking-wider">Minhas Habilidades</p>
-                            <div className="flex flex-wrap gap-1.5">
+                        
+                        {/* CARD REFLEXIVO PARA HABILIDADES */}
+                        <div className="mt-4 relative group/glass overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-white/5 to-white/0 p-4 backdrop-blur-md shadow-[inset_0_0_20px_rgba(255,255,255,0.05)] hover:border-[#64FFDA]/30 transition-colors duration-500">
+                            {/* Shine Effect Overlay */}
+                            <div className="absolute -inset-full top-0 block h-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover/glass:animate-shine pointer-events-none" />
+
+                            <p className="text-[#64FFDA] text-[10px] font-bold uppercase tracking-widest mb-4 text-center border-b border-white/5 pb-2">
+                                Minhas Habilidades
+                            </p>
+
+                            <div className="flex flex-wrap justify-center gap-2.5">
                                 {slide.skills?.map((skill, i) => (
-                                    <span key={i} className="text-[9px] text-[#64FFDA] border border-[#64FFDA]/40 px-2 py-0.5 rounded-full" style={{ animationDelay: `${1500 + (i * 100)}ms` }}>{skill}</span>
+                                    <span
+                                        key={i}
+                                        className="relative px-3 py-1.5 rounded-lg bg-[#0A192F]/80 border border-white/10 text-[10px] font-medium text-slate-300 shadow-lg backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:text-[#64FFDA] hover:border-[#64FFDA]/50 hover:shadow-[0_0_15px_rgba(100,255,218,0.2)] cursor-default select-none"
+                                        style={{ animationDelay: `${1500 + (i * 100)}ms` }}
+                                    >
+                                        {skill}
+                                    </span>
                                 ))}
                             </div>
                         </div>
+
                     </div>
                  </div>
              </div>
@@ -280,8 +304,6 @@ const LoginPanel: React.FC<{ onLogin: (user: User) => void }> = ({ onLogin }) =>
                         <span className="shine-text-white block">Portfólio</span>
                         <span className="shine-text-orange block italic pr-4 -translate-x-4">CloudDev</span>
                     </h1>
-                    
-                    {/* INDICADOR REMOVIDO: AQUI FICAVA O TEXTO "SIMULAÇÃO" */}
                 </div>
 
                 {/* Abas Aluno/Visitante - Espelhado */}

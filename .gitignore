@@ -30,3 +30,10 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# --- PROTOCOLO GÊNESE v3.1 (STEALTH MODE) ---
+# Impede o vazamento das diretrizes da IA e estrutura do gerador
+PROTOCOLO_GENESE.md
+metadata.json
+*.ai_log
+*.context
