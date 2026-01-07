@@ -1,5 +1,5 @@
 
-# 🚀 Portfólio CloudDev - AWS S3 Edition
+# Portfólio CloudDev - AWS S3 Edition
 
 **Arquiteto:** Edivaldo Junior
 **Versão:** 2.0 (Frontend-Only / Static)
@@ -8,7 +8,7 @@ Este projeto foi refatorado para funcionar sem backend Node.js, utilizando o arm
 
 ---
 
-## 🛠️ Passo a Passo para Iniciar (Novo Projeto)
+## Passo a Passo para Iniciar (Novo Projeto)
 
 Se você está criando um novo repositório do zero, siga estes comandos no seu terminal:
 
@@ -40,7 +40,7 @@ O projeto rodará em `http://localhost:5173`.
 
 ---
 
-## ☁️ Como Deployar na AWS (S3)
+## Como Deployar na AWS (S3)
 
 1. **Gerar o Build de Produção:**
    ```bash
@@ -59,9 +59,9 @@ O projeto rodará em `http://localhost:5173`.
 
 ---
 
-## 🔑 Credenciais Padrão (Simulação)
+## Credenciais Padrão (Simulação)
 Como não há backend real, use estas credenciais para testar:
 - **Admin:** `admin@cloud.com` / `admin123`
 - **Cadastro:** Você pode clicar em "Cadastrar Novo Aluno" na tela de login; ele salvará no navegador.
 
-*Gerado pelo Protocolo Gênese v3.4*
+*Gerado pelo Protocolo Gênese v3.5*

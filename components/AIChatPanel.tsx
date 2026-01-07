@@ -28,7 +28,7 @@ interface AIScoreData {
 const AIChatPanel: React.FC<AIChatPanelProps> = ({ proposals, members, votes }) => {
   // --- STATE ---
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: 'Protocolo Gênese v3.4 (Strategic Grade) Ativo. Plano de Batalha Trello v2.0 carregado. Estou ciente dos Squads Alpha e Bravo. Como posso ajudar na execução do Sprint 1, Arquiteto Edivaldo?' }
+    { role: 'model', text: 'Protocolo Gênese v3.5 (Clean Text) Ativo. Plano de Batalha Trello v2.0 carregado. Aguardando diretrizes do Arquiteto Edivaldo.' }
   ]);
   const [inputText, setInputText] = useState('');
   const [isLoadingChat, setIsLoadingChat] = useState(false);
@@ -45,7 +45,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ proposals, members, votes }) 
 
   // --- HELPERS ---
   const buildContext = () => {
-    let context = `DADOS DO AMBIENTE (PROTOCOLO GÊNESE v3.4 - STRATEGIC):\n`;
+    let context = `DADOS DO AMBIENTE (PROTOCOLO GÊNESE v3.5 - CLEAN TEXT):\n`;
     context += `ARQUITETO DO SISTEMA: Edivaldo Junior (Líder Frontend / Squad Bravo).\n`;
     context += `PLANO DE BATALHA TRELLO V2.0 (ATIVO):\n`;
     context += `  - Squad Alpha (Backend/Infra): Gabriel Araújo (Foco: Lambda, DynamoDB, API Gateway).\n`;
@@ -128,18 +128,21 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ proposals, members, votes }) 
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         const context = buildContext();
         
-        // PROTOCOLO GÊNESE V3.4 - STRATEGIC GRADE
+        // PROTOCOLO GÊNESE V3.5 - CLEAN TEXT STANDARD
         const systemInstruction = `
         IDENTIDADE: Você é o 'Arquiteto Virtual MatrizCognis', assistente estratégico do Edivaldo Junior.
         
-        DIRETRIZ DE BATALHA (v3.4):
-        1. Você conhece o Plano Trello v2.0. Se Edivaldo perguntar "O que devo fazer?", responda com base nos cartões do Squad Bravo (Frontend).
-        2. Se perguntar sobre o Gabriel Araújo, saiba que ele é o responsável pelo Backend (Alpha).
-        3. Mantenha o tom profissional, direto e focado em AWS Serverless.
+        DIRETRIZ DE BATALHA (v3.5 - LEI DE TEXTO LIMPO):
+        1. Você conhece o Plano Trello v2.0.
+        2. IMPORTANTE: NÃO use emojis ou figurinhas em suas respostas. O texto deve ser limpo, humano e profissional.
+        3. Use formatação Markdown (negrito, listas) para organizar a informação.
+        4. Seja técnico sobre React, Tailwind e AWS Serverless.
+        5. Se Edivaldo perguntar "O que devo fazer?", responda com base nos cartões do Squad Bravo (Frontend).
         
         ESTILO DE RESPOSTA:
-        - Use termos militares/estratégicos ("Afirmativo", "Plano Executado", "Prioridade Alpha").
-        - Seja técnico sobre React, Tailwind e AWS SDK.
+        - Direto.
+        - Sem adornos visuais.
+        - Focado na engenharia.
         `;
 
         const prompt = `${context}\n\nPERGUNTA DO ARQUITETO (Edivaldo): ${userMsg}`;
@@ -181,7 +184,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ proposals, members, votes }) 
         const prompt = `
         ${dataPrompt}
         
-        TAREFA: Como um Juiz Técnico Imparcial (Protocolo Gênese v3.4), atribua notas de 1 a 5.
+        TAREFA: Como um Juiz Técnico Imparcial (Protocolo Gênese v3.5), atribua notas de 1 a 5.
         Se a descrição estiver vazia ou vaga, puna a nota severamente (1 ou 2).
         Se a descrição for técnica e robusta, premie (4 ou 5).
         
@@ -213,7 +216,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ proposals, members, votes }) 
             })).sort((a: AIScoreData, b: AIScoreData) => b.totalScore - a.totalScore);
             
             setAiScores(enrichedData);
-            setMessages(prev => [...prev, { role: 'model', text: 'Auditoria v3.4 concluída. Notas técnicas calculadas. Aguardando revisão humana.' }]);
+            setMessages(prev => [...prev, { role: 'model', text: 'Auditoria v3.5 concluída. Notas técnicas calculadas. Aguardando revisão humana.' }]);
         }
 
     } catch (error) {
@@ -233,14 +236,14 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ proposals, members, votes }) 
         const prompt = `
         ${context}
         
-        Atue como o braço direito do Arquiteto Edivaldo Junior. Gere um RELATÓRIO TÉCNICO EXECUTIVO (Protocolo Gênese v3.4).
+        Atue como o braço direito do Arquiteto Edivaldo Junior. Gere um RELATÓRIO TÉCNICO EXECUTIVO (Protocolo Gênese v3.5).
         
         Estruture a resposta assim:
         1. **Veredito do CTO Virtual**: Qual projeto deve ser escolhido e por quê? (Baseie-se em ROI e Viabilidade Técnica).
         2. **Análise de Arquitetura**: O projeto vencedor se encaixa bem no modelo Serverless da AWS (Lambda/S3)? Por quê?
         3. **Mitigação de Riscos**: Liste 3 riscos técnicos imediatos e como resolvê-los na primeira Sprint.
         
-        Seja rigoroso. Não aceite descrições vagas.
+        Seja rigoroso e limpo. Não use emojis.
         `;
 
         const response = await ai.models.generateContent({
@@ -351,7 +354,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ proposals, members, votes }) 
                     <Brain size={48} className="text-purple-600 dark:text-purple-400" />
                 </div>
                 <div>
-                    <h3 className="text-xl font-bold text-slate-800 dark:text-white">Auditoria IA (Protocolo Gênese v3.4)</h3>
+                    <h3 className="text-xl font-bold text-slate-800 dark:text-white">Auditoria IA (Protocolo Gênese v3.5)</h3>
                     <p className="text-slate-500 max-w-sm mx-auto mt-2">
                         O Arquiteto Virtual vai ler as descrições técnicas e atribuir notas (1-5) baseadas na robustez da arquitetura proposta.
                     </p>
@@ -441,7 +444,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ proposals, members, votes }) 
         {/* Header Report */}
         <div className="border-b-2 border-slate-300 pb-4 mb-4">
             <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight">Dossiê de Decisão Técnica</h1>
-            <p className="text-slate-600 text-lg">Matriz de Análise Comparativa (Protocolo Gênese v3.4)</p>
+            <p className="text-slate-600 text-lg">Matriz de Análise Comparativa (Protocolo Gênese v3.5)</p>
             <p className="text-sm text-slate-500 mt-2 font-mono">Arquiteto Responsável: Edivaldo Junior</p>
             <p className="text-sm text-slate-500 font-mono">Data da Auditoria: {new Date().toLocaleDateString()}</p>
         </div>
@@ -655,7 +658,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({ proposals, members, votes }) 
             </div>
             <div>
                 <h3 className="font-bold text-slate-900 dark:text-white">Arquiteto Virtual</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Protocolo Gênese v3.4 Ativo</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Protocolo Gênese v3.5 Ativo</p>
             </div>
          </div>
 
