@@ -63,5 +63,3 @@ O projeto rodará em `http://localhost:5173`.
 Como não há backend real, use estas credenciais para testar:
 - **Admin:** `admin@cloud.com` / `admin123`
 - **Cadastro:** Você pode clicar em "Cadastrar Novo Aluno" na tela de login; ele salvará no navegador.
-
-*Gerado pelo Protocolo Gênese v3.5*
