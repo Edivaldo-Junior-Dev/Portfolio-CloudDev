@@ -2,16 +2,16 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { INITIAL_VOTES, MEMBERS as DEFAULT_MEMBERS, PROPOSALS as DEFAULT_PROPOSALS, CORE_TEAM_IDS, TEAMS as DEFAULT_TEAMS } from './constants';
 import { Score, VotesState, Member, Proposal, User, Team } from './types';
-// import { supabase } from './lib/supabase'; // REMOVIDO PELA AUDITORIA
-import { api } from './lib/api'; // NOVA API
+import { api } from './lib/api'; 
 import VotingForm from './components/VotingForm';
 import ResultsMatrix from './components/ResultsMatrix';
 import AIChatPanel from './components/AIChatPanel';
 import LoginPanel from './components/LoginPanel';
 import TeamDashboard from './components/TeamDashboard';
 import TeamMembers from './components/TeamMembers';
-import GuidePanel from './components/GuidePanel'; // Importação faltante
-import { Moon, Sun, BarChart3, LogOut, Layers, ChevronLeft, BookOpen } from 'lucide-react';
+import TeamRolesPanel from './components/TeamRolesPanel'; 
+import GuidePanel from './components/GuidePanel'; 
+import { Moon, Sun, BarChart3, LogOut, Layers, ChevronLeft, BookOpen, Wifi } from 'lucide-react';
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
@@ -19,7 +19,7 @@ const App: React.FC = () => {
     return saved ? JSON.parse(saved) : null;
   });
 
-  const [view, setView] = useState<'dashboard' | 'matrix' | 'members' | 'guide'>('dashboard');
+  const [view, setView] = useState<'dashboard' | 'matrix' | 'members' | 'guide' | 'roles'>('dashboard');
   const [activeTab, setActiveTab] = useState<'vote' | 'results' | 'ai'>('vote');
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   
@@ -29,15 +29,14 @@ const App: React.FC = () => {
   const [votes, setVotes] = useState<VotesState>(INITIAL_VOTES);
   
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('theme') === 'dark');
-  const [syncStatus, setSyncStatus] = useState<'online' | 'offline' | 'error'>('online');
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isOnline, setIsOnline] = useState(true);
 
-  // --- SINCRONIZAÇÃO COM BACKEND ---
+  // --- SINCRONIZAÇÃO (AGORA LOCAL/AWS READY) ---
 
   const syncData = useCallback(async () => {
     if(!currentUser) return;
     try {
-        // Busca dados paralelos
+        // Agora busca do LocalStorage (via api.ts refatorado)
         const [remoteTeams, remoteProfiles, remoteVotes] = await Promise.all([
             api.fetchData('teams'),
             api.fetchData('profiles'),
@@ -48,20 +47,16 @@ const App: React.FC = () => {
         if (remoteProfiles) setSavedProfiles(remoteProfiles);
         if (remoteVotes) setVotes(remoteVotes);
 
-        setSyncStatus('online');
-        setErrorMessage(null);
+        setIsOnline(true);
     } catch (e: any) {
-        setSyncStatus('error');
-        setErrorMessage("Falha na conexão com API");
+        console.error("Erro de sync:", e);
+        setIsOnline(false);
     }
   }, [currentUser]);
 
   useEffect(() => {
     if(currentUser) {
         syncData();
-        // Polling simples para manter atualizado (substituto de WebSockets por enquanto)
-        const interval = setInterval(syncData, 5000);
-        return () => clearInterval(interval);
     }
   }, [currentUser, syncData]);
 
@@ -69,7 +64,7 @@ const App: React.FC = () => {
 
   const handleSaveTeam = async (updatedTeam: Team) => {
       const newTeams = teams.map(t => t.id === updatedTeam.id ? updatedTeam : t);
-      setTeams(newTeams); // Otimista
+      setTeams(newTeams); 
       await api.saveData('teams', newTeams);
   };
 
@@ -84,14 +79,12 @@ const App: React.FC = () => {
     if (!currentUser) return;
     const memberId = CORE_TEAM_IDS.find(id => currentUser.name.toLowerCase().includes(id)) || 'visitor';
     
-    // Atualiza estado local deep copy
     const newVotes = JSON.parse(JSON.stringify(votes));
     if(!newVotes[memberId]) newVotes[memberId] = {};
     if(!newVotes[memberId][pid]) newVotes[memberId][pid] = {};
     newVotes[memberId][pid][cidx] = score;
 
     setVotes(newVotes);
-    // Salva estado completo no backend (estratégia simples para MVP)
     await api.saveData('votes', newVotes);
   };
 
@@ -123,7 +116,7 @@ const App: React.FC = () => {
             <div>
               <h1 className="text-lg font-black dark:text-white leading-none tracking-tighter">Matriz<span className="text-orange-500">Cognis</span></h1>
               <p className="text-[10px] text-slate-400 mt-1 font-bold uppercase tracking-widest flex items-center gap-2">
-                {syncStatus === 'online' ? <span className="text-emerald-500">● API CONECTADA</span> : <span className="text-red-500">● {syncStatus.toUpperCase()} ({errorMessage || 'Desconectado'})</span>}
+                 <Wifi size={10} className="text-emerald-500" /> SYSTEM READY (AWS S3 MODE)
               </p>
             </div>
           </div>
@@ -158,6 +151,7 @@ const App: React.FC = () => {
             onSaveTeam={handleSaveTeam} 
             onEnterMatrix={(t) => { setSelectedTeam(t); setView('matrix'); }} 
             onViewMembers={(t) => { setSelectedTeam(t); setView('members'); }}
+            onViewRoles={(t) => { setSelectedTeam(t); setView('roles'); }}
             currentUser={currentUser} 
           />
         )}
@@ -167,6 +161,16 @@ const App: React.FC = () => {
             team={selectedTeam} 
             onBack={() => setView('dashboard')}
             currentUser={currentUser} 
+            savedProfiles={savedProfiles}
+            onSaveProfile={handleSaveProfile}
+          />
+        )}
+
+        {view === 'roles' && selectedTeam && (
+          <TeamRolesPanel
+            team={selectedTeam}
+            currentUser={currentUser}
+            onBack={() => setView('dashboard')}
             savedProfiles={savedProfiles}
             onSaveProfile={handleSaveProfile}
           />

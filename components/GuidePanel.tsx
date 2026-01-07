@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { CRITERIA, Member, Proposal } from '../types';
-import { BookOpen, UserCheck, BarChart3, Sparkles, Settings, Code2, Database, Layers, CheckCircle2, ChevronDown, ChevronUp, Cpu, ShieldCheck, Cloud, Server, Globe, ArrowRight } from 'lucide-react';
+import { BookOpen, UserCheck, BarChart3, Sparkles, Settings, Code2, Database, Layers, CheckCircle2, ChevronDown, ChevronUp, Cpu, ShieldCheck, Cloud, Server, Globe, ArrowRight, LayoutList, Target, User, Flag } from 'lucide-react';
 
 interface GuidePanelProps {
   members: Member[];
@@ -9,7 +9,7 @@ interface GuidePanelProps {
 }
 
 const GuidePanel: React.FC<GuidePanelProps> = ({ members, proposals }) => {
-  const [openSection, setOpenSection] = useState<string | null>('aws'); // Default para AWS
+  const [openSection, setOpenSection] = useState<string | null>('trello'); // Default para Trello agora
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? null : section);
@@ -46,7 +46,105 @@ const GuidePanel: React.FC<GuidePanelProps> = ({ members, proposals }) => {
 
       <div className="space-y-4">
 
-        {/* SECTION 4: ARQUITETURA AWS (ATUALIZADO CONFORME DOSSIÊ) */}
+        {/* SECTION 1: PLANO DE BATALHA TRELLO (NOVO) */}
+        <SectionHeader id="trello" title="Plano de Batalha: Execução Trello v2.0" icon={LayoutList} colorClass="text-blue-600 bg-blue-600" />
+        {openSection === 'trello' && (
+          <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 space-y-8 animate-fade-in-down">
+            
+            {/* SQUADS */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border-l-4 border-purple-500">
+                    <h4 className="font-bold text-slate-800 dark:text-white flex items-center gap-2 mb-2">
+                        <UserCheck size={16} className="text-purple-500"/> Comando Central
+                    </h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400"><strong>Emanuel Heráclio</strong></p>
+                    <span className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full mt-1 inline-block">Scrum Master</span>
+                </div>
+                <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border-l-4 border-blue-500">
+                    <h4 className="font-bold text-slate-800 dark:text-white flex items-center gap-2 mb-2">
+                        <Server size={16} className="text-blue-500"/> Squad Alpha (Backend)
+                    </h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400"><strong>Gabriel Araújo</strong></p>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                        <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">DynamoDB</span>
+                        <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">Lambda</span>
+                    </div>
+                </div>
+                <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border-l-4 border-emerald-500">
+                    <h4 className="font-bold text-slate-800 dark:text-white flex items-center gap-2 mb-2">
+                        <Globe size={16} className="text-emerald-500"/> Squad Bravo (Frontend)
+                    </h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400"><strong>Edivaldo Junior</strong></p>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                        <span className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-full">React</span>
+                        <span className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-full">Integração</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* SPRINTS */}
+            <div className="space-y-6">
+                <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+                    <div className="bg-orange-500 text-white p-3 font-bold flex items-center gap-2">
+                        <Target size={20} /> Sprint 1: A Fundação (API & Protótipos)
+                    </div>
+                    <div className="p-4 bg-orange-50 dark:bg-orange-900/10 grid gap-3">
+                        
+                        <div className="bg-white dark:bg-slate-800 p-3 rounded shadow-sm border-l-4 border-blue-500 flex justify-between items-start">
+                             <div>
+                                <h5 className="font-bold text-slate-800 dark:text-white text-sm">[Infra] Setup AWS SAM/Terraform</h5>
+                                <p className="text-xs text-slate-500 mt-1">Provisionar S3, DynamoDB, Cognito e IAM Roles.</p>
+                             </div>
+                             <span className="text-[10px] font-bold uppercase text-blue-500">Squad Alpha</span>
+                        </div>
+
+                        <div className="bg-white dark:bg-slate-800 p-3 rounded shadow-sm border-l-4 border-blue-500 flex justify-between items-start">
+                             <div>
+                                <h5 className="font-bold text-slate-800 dark:text-white text-sm">[Backend] Lambda de Orquestração & API Gateway</h5>
+                                <p className="text-xs text-slate-500 mt-1">Handlers para upload e processamento. Endpoints REST.</p>
+                             </div>
+                             <span className="text-[10px] font-bold uppercase text-blue-500">Gabriel Araújo</span>
+                        </div>
+
+                        <div className="bg-white dark:bg-slate-800 p-3 rounded shadow-sm border-l-4 border-emerald-500 flex justify-between items-start">
+                             <div>
+                                <h5 className="font-bold text-slate-800 dark:text-white text-sm">[Frontend] Prototipagem & Telas UI</h5>
+                                <p className="text-xs text-slate-500 mt-1">Wireframes Figma + Código React (Login, Dashboard, Upload) sem lógica.</p>
+                             </div>
+                             <span className="text-[10px] font-bold uppercase text-emerald-500">Edivaldo Junior</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden opacity-75">
+                         <div className="bg-slate-700 text-white p-2 font-bold text-sm flex items-center gap-2">
+                            <Flag size={14} /> Sprint 2: Integração
+                        </div>
+                        <ul className="p-4 space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>• [Frontend] Integração Auth Cognito (Edivaldo)</li>
+                            <li>• [Frontend] Conexão Dashboard com API (Edivaldo)</li>
+                            <li>• [Testes] Validação End-to-End</li>
+                        </ul>
+                    </div>
+                    <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden opacity-75">
+                         <div className="bg-slate-700 text-white p-2 font-bold text-sm flex items-center gap-2">
+                            <Flag size={14} /> Sprint 3: Polimento
+                        </div>
+                        <ul className="p-4 space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>• [Frontend] Responsividade Mobile</li>
+                            <li>• [Doc] Dossiê Final (Emanuel)</li>
+                            <li>• [Apresentação] Slides e Roteiro</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+          </div>
+        )}
+
+        {/* SECTION 2: ARQUITETURA AWS */}
         <SectionHeader id="aws" title="Mapeamento de Serviços: De Vercel/Supabase para AWS" icon={Cloud} colorClass="text-orange-500 bg-orange-500" />
         {openSection === 'aws' && (
           <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 space-y-6 animate-fade-in-down">
