@@ -9,8 +9,9 @@ import AIChatPanel from './components/AIChatPanel';
 import LoginPanel from './components/LoginPanel';
 import TeamDashboard from './components/TeamDashboard';
 import TeamMembers from './components/TeamMembers';
-import TeamRolesPanel from './components/TeamRolesPanel'; // NOVO COMPONENTE
+import TeamRolesPanel from './components/TeamRolesPanel'; 
 import GuidePanel from './components/GuidePanel'; 
+import DeployPanel from './components/DeployPanel'; // NOVO IMPORT
 import { Moon, Sun, BarChart3, LogOut, Layers, ChevronLeft, BookOpen } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -19,8 +20,8 @@ const App: React.FC = () => {
     return saved ? JSON.parse(saved) : null;
   });
 
-  // ADICIONADO 'roles' AO VIEW STATE
-  const [view, setView] = useState<'dashboard' | 'matrix' | 'members' | 'guide' | 'roles'>('dashboard');
+  // ADICIONADO 'deploy' AO VIEW STATE
+  const [view, setView] = useState<'dashboard' | 'matrix' | 'members' | 'guide' | 'roles' | 'deploy'>('dashboard');
   const [activeTab, setActiveTab] = useState<'vote' | 'results' | 'ai'>('vote');
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   
@@ -111,6 +112,11 @@ const App: React.FC = () => {
 
   if (!currentUser) return <LoginPanel onLogin={setCurrentUser} />;
 
+  // Se estiver na tela de Deploy, removemos o layout padrão para imersão total
+  if (view === 'deploy') {
+    return <DeployPanel currentUser={currentUser} onBack={() => setView('dashboard')} />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 transition-colors duration-200 font-sans">
       <header className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
@@ -155,7 +161,8 @@ const App: React.FC = () => {
             onSaveTeam={handleSaveTeam} 
             onEnterMatrix={(t) => { setSelectedTeam(t); setView('matrix'); }} 
             onViewMembers={(t) => { setSelectedTeam(t); setView('members'); }}
-            onViewRoles={(t) => { setSelectedTeam(t); setView('roles'); }} // NOVA PROP
+            onViewRoles={(t) => { setSelectedTeam(t); setView('roles'); }}
+            onDeployProject={(t) => { setView('deploy'); }} // HANDLER NOVO
             currentUser={currentUser} 
           />
         )}
